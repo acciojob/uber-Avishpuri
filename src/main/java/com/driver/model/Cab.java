@@ -5,6 +5,7 @@ import org.springframework.data.annotation.Id;
 import javax.persistence.*;
 
 @Entity
+@Table
 public class Cab{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
