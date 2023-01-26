@@ -1,6 +1,6 @@
 package com.driver.services.impl;
 
-import com.driver.model.*;
+
 import com.driver.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,10 +8,7 @@ import com.driver.repository.CustomerRepository;
 import com.driver.repository.DriverRepository;
 import com.driver.repository.TripBookingRepository;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 
 import com.driver.model.TripBooking;
@@ -57,7 +54,7 @@ public class CustomerServiceImpl implements CustomerService {
 		//Book the driver with lowest driverId who is free (cab available variable is Boolean.TRUE). If no driver is available, throw "No cab available!" exception
 		//Avoid using SQL query
 		List<Driver> driverList = driverRepository2.findAll();
-		Collections.sort(driverList, (a, b) -> a.getDriverId() - b.getDriverId());
+		Collections.sort(driverList, Comparator.comparingInt(Driver::getDriverId));
 		Driver driverAvailable = null;
 		for (Driver driver : driverList) {
 			if (driver.getCab().isAvailable()) {
@@ -98,6 +95,7 @@ public class CustomerServiceImpl implements CustomerService {
 		   tripBooking.setTripStatus(TripStatus.CANCELED);
 		   tripBooking.setToLocation(null);
 		   tripBooking.setFromLocation(null);
+		   tripBooking.getDriver().getCab().setAvailable(true);
 		   tripBookingRepository2.save(tripBooking);
 
 
