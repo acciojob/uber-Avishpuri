@@ -3,13 +3,14 @@ package com.driver.model;
 import org.springframework.data.annotation.Id;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table
 public class Driver{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int driverId;
     private String mobile;
     private String password;
@@ -27,7 +28,7 @@ public class Driver{
 
     @OneToMany(mappedBy = "driver",cascade = CascadeType.ALL)
     @JoinColumn
-    private List<TripBooking> tripBookingList;
+    private List<TripBooking> tripBookingList=new ArrayList<>();
 
     public int getDriverId() {
         return driverId;

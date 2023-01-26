@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Table
 public class Cab{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private int perKmRate;
     private boolean available;
@@ -47,6 +47,8 @@ public class Cab{
     public void setAvailable(boolean available) {
         this.available = available;
     }
+
+
 
     public Driver getDriver() {
         return driver;

@@ -53,33 +53,39 @@ public class CustomerServiceImpl implements CustomerService {
 	public TripBooking bookTrip(int customerId, String fromLocation, String toLocation, int distanceInKm) throws Exception {
 		//Book the driver with lowest driverId who is free (cab available variable is Boolean.TRUE). If no driver is available, throw "No cab available!" exception
 		//Avoid using SQL query
-		List<Driver> driverList = driverRepository2.findAll();
-		Collections.sort(driverList, Comparator.comparingInt(Driver::getDriverId));
-		Driver driverAvailable = null;
-		for (Driver driver : driverList) {
-			if (driver.getCab().isAvailable()) {
-				driverAvailable = driver;
-				break;
-			}
-		}
-		if (driverAvailable == null) {
+		TripBooking tripBooking = new TripBooking();
+		Driver driver = null;
+		List<Driver> allDrivers = driverRepository2.findAll();
+		if(allDrivers == null){
 			throw new Exception("No cab available!");
 		}
-		TripBooking tripBooking = new TripBooking();
+
+		for(Driver driver1: allDrivers){
+			if(driver1.getCab().isAvailable()==true) {
+				if((driver == null) || (driver.getDriverId() > driver1.getDriverId())){
+					driver = driver1;
+				}
+			}
+		}
+		if(driver == null){
+			throw new Exception("No cab available!");
+		}
 		Customer customer = customerRepository2.findById(customerId).get();
 		tripBooking.setCustomer(customer);
-		tripBooking.setDriver(driverAvailable);
-		tripBooking.setDistanceInKm(distanceInKm);
+		tripBooking.setDriver(driver);
+		driver.getCab().setAvailable(Boolean.FALSE);
 		tripBooking.setFromLocation(fromLocation);
 		tripBooking.setToLocation(toLocation);
-		int bill = driverAvailable.getCab().getPerKmRate() * distanceInKm;
-		tripBooking.setBill(bill);
+		tripBooking.setDistanceInKm(distanceInKm);
 		tripBooking.setTripStatus(TripStatus.CONFIRMED);
+
 		customer.getTripBookingList().add(tripBooking);
-		driverAvailable.getTripBookingList().add(tripBooking);
-		customerRepository2.save(customer);
-		driverRepository2.save(driverAvailable);
-		//tripBookingRepository2.save(tripBooking);
+		customerRepository2.save(customer); //saving the parent.
+
+		driver.getTripBookingList().add(tripBooking);
+		driverRepository2.save(driver);
+
+		//tripBookingRepository.save(tripBooking); ab iski zrorat nhi hai as this is the child.
 		return tripBooking;
 
 	}
@@ -104,8 +110,11 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	public void completeTrip(Integer tripId){
 		//Complete the trip having given trip Id and update TripBooking attributes accordingly
-      TripBooking tripBooking=tripBookingRepository2.findById(tripId).get();
-	  tripBooking.setTripStatus(TripStatus.COMPLETED);
+		TripBooking tripBooking = tripBookingRepository2.findById(tripId).get();
+		tripBooking.setTripStatus(TripStatus.COMPLETED);
+		int bill = tripBooking.getDriver().getCab().getPerKmRate()*tripBooking.getDistanceInKm();
+		tripBooking.setBill(bill);
+		tripBooking.getDriver().getCab().setAvailable(Boolean.TRUE);
 		tripBookingRepository2.save(tripBooking);
 
 	}

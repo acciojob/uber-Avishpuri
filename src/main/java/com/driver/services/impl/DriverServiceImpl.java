@@ -25,7 +25,7 @@ public class DriverServiceImpl implements DriverService {
 	   Cab cab=new Cab();
 	   cab.setAvailable(true);
 	   cab.setPerKmRate(10);
-	   driver.setCab(cab);
+	   cab.setDriver(driver);
 	   driver.setMobile(mobile);
 	   driver.setPassword(password);
 	   driverRepository3.save(driver);
