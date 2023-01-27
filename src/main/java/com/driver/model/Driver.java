@@ -13,8 +13,8 @@ public class Driver{
     private String mobile;
     private String password;
 
-    public Driver(int driverId, String mobile, String password) {
-        this.driverId = driverId;
+    public Driver(String mobile, String password) {
+
         this.mobile = mobile;
         this.password = password;
     }

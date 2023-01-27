@@ -1,6 +1,7 @@
 package com.driver.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -13,12 +14,12 @@ public class Customer{
     private String password;
 
     @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL)
-    private List<TripBooking> tripBookingList;
+    private List<TripBooking> tripBookingList=new ArrayList<>();
 
     public Customer(){}
 
-    public Customer(int customerId, String mobile, String password) {
-        this.customerId = customerId;
+    public Customer(String mobile, String password) {
+
         this.mobile = mobile;
         this.password = password;
     }
