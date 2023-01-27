@@ -1,7 +1,5 @@
 package com.driver.model;
 
-import org.springframework.data.annotation.Id;
-
 import javax.persistence.*;
 
 @Entity

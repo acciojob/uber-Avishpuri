@@ -1,7 +1,5 @@
 package com.driver.model;
 
-import org.springframework.data.annotation.Id;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -15,7 +13,6 @@ public class Customer{
     private String password;
 
     @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL)
-    @JoinColumn
     private List<TripBooking> tripBookingList;
 
     public Customer(){}

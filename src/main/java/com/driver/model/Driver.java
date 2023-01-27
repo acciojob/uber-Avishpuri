@@ -1,7 +1,5 @@
 package com.driver.model;
 
-import org.springframework.data.annotation.Id;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +21,9 @@ public class Driver{
     public Driver(){}
 
     @OneToOne(mappedBy = "driver",cascade = CascadeType.ALL)
-    @JoinColumn
     private Cab cab;
 
     @OneToMany(mappedBy = "driver",cascade = CascadeType.ALL)
-    @JoinColumn
     private List<TripBooking> tripBookingList=new ArrayList<>();
 
     public int getDriverId() {
