@@ -56,12 +56,12 @@ public class CustomerServiceImpl implements CustomerService {
 		TripBooking tripBooking = new TripBooking();
 		Driver driver = null;
 		List<Driver> allDrivers = driverRepository2.findAll();
-		if(allDrivers == null){
-			throw new Exception("No cab available!");
-		}
+//		if(allDrivers == null){
+//			throw new Exception("No cab available!");
+//		}
 
 		for(Driver driver1: allDrivers){
-			if(driver1.getCab().isAvailable()==true) {
+			if(driver1.getCab().getAvailable()==true) {
 				if((driver == null) || (driver.getDriverId() > driver1.getDriverId())){
 					driver = driver1;
 				}
